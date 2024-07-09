@@ -1,3 +1,10 @@
+"""
+本项目使用的情形
+原图+缺口
+"""
+
+
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By

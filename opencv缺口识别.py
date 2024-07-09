@@ -1,3 +1,10 @@
+"""
+适用于
+滑块+原图
+"""
+
+
+
 import cv2
 
 def indentify_gap(bg_image, tp_image, out = 'new_image.png'):
@@ -27,8 +34,5 @@ def indentify_gap(bg_image, tp_image, out = 'new_image.png'):
 
     # 返回缺口坐标X
     return tl[0]
-
-left = indentify_gap('bg.png', 'tp.png')
-print(left)
 
 
