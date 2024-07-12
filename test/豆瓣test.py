@@ -6,6 +6,7 @@
 import time
 import random
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,6 +14,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from 缺口偏移量计算 import get_gap
 from 人性化滑动 import move_slide
 from opencv缺口识别 import indentify_gap
+
+import sys
 
 
 
@@ -30,8 +33,7 @@ class Slide:
         self.options.use_chromium = True
         # self.options.add_argument('--headless')
         self.options.add_argument('--disable-gpu')
-        self.options.add_argument(
-            "user-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0'")        # 去掉识别
+        self.options.add_argument("user-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0'")        # 去掉识别
         self.options.add_experimental_option('excludeSwitches', ['enable-automation'])
         self.options.add_experimental_option('detach', True)
         # 去掉window.navigator.webdriver的特性
@@ -72,16 +74,35 @@ class Slide:
 
 
     def login(self):
-        time.sleep(3.2)
-        self.driver.find_element(By.CSS_SELECTOR, '.account-tab-account').click()
+        time.sleep(1.1)
+
+        actions = ActionChains(self.driver)
+        actions.move_by_offset(930, 164).click().perform()
         time.sleep(random.uniform(0.1, 1.8))
-        self.driver.find_element(By.CLASS_NAME, 'account-form-input').click()
+
+        actions.move_by_offset(3, 72).click().perform()
         time.sleep(random.uniform(0.1, 1.8))
-        self.driver.find_element(By.CLASS_NAME, 'account-form-input').send_keys(self.username)
+        actions.send_keys(self.username).perform()
         time.sleep(random.uniform(0.1, 1.0))
-        self.driver.find_element(By.CSS_SELECTOR, '.account-form-input.password').click()
+
+        actions.move_by_offset(-5, 56).click().perform()
         time.sleep(random.uniform(0.1, 1.8))
-        self.driver.find_element(By.CSS_SELECTOR, '.account-form-input.password').send_keys(self.password)
+        actions.send_keys(self.password).perform()
+        time.sleep(random.uniform(0.1, 1.8))
+
+
+        actions.move_by_offset(2, 48).click().perform()
+
+
+    def ele_load(self):
+
+        js_code = """
+        var element = document.querySelector('.account-tab-account');
+        element.click();
+        """
+        content = self.driver.execute_script(js_code)
+
+
 
 
     def screen_shot(self, name):
@@ -179,9 +200,11 @@ class Slide:
     def run(self):
         self.get_to_website()
         self.switch_to_main_window()
-        self.login()
-        self.get_captcha()
-        self.way_1()
+        time.sleep(5)
+        self.ele_load()
+        #self.login()
+        # self.get_captcha()
+        time.sleep(5)
         self.quit()
 
 
@@ -191,3 +214,5 @@ class Slide:
 if __name__ == '__main__':
     slide = Slide('16327754698', '789465132')
     slide.run()
+
+    

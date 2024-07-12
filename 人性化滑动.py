@@ -23,4 +23,6 @@ def move_slide(offset_x, offset_y, left):
     offset_y += random.randint(-2, 2)
     pyautogui.moveTo(left + offset_x + random.randint(-2, 2), offset_y,
                      duration=0.5 + random.randint(-3, 3) / 100)
+
+
     pyautogui.mouseUp()
